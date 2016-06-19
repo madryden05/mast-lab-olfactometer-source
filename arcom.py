@@ -4,9 +4,10 @@
 # Contains all the low level utility functions used to talk to and interact with the PythonSlave Arduino sketch.
 ########################################################################################################################
 
+
 __author__ = 'Christopher Broussard'
 
-DEBUG_LEVEL = 0
+DEBUG_LEVEL = 1 # 1?
 
 # Define some constants that correspond to values used on the Arduino itself.
 INPUT = 0
@@ -37,7 +38,9 @@ def set_pinmode(arduino_com, pin, pinmode):
     """
 
     # Send the pinmode.
+    arduino_com.flushInput()
     arduino_com.write("{0} {1} {2}\n".format(OpCodes.SetPinMode, pin, pinmode).encode('ascii'))
+
 
     # Wait for the echo string.
     wait_for_response(arduino_com)
@@ -56,7 +59,7 @@ def set_pin(arduino_com, pin, pin_value):
     """
 
     # Send the pin value.
-    arduino_com.write("{0} {1} {2}\n".format(OpCodes.SetPin, pin, pin_value).encode('ascii'))
+    arduino_com.write("{0} {1} {2}\n".format(OpCodes.SetPin, pin, pin_value).encode('utf-8'))
 
     # Wait for the echo string.
     wait_for_response(arduino_com)
@@ -75,7 +78,7 @@ def get_pin(arduino_com, pin):
     """
 
     # Request the pin value.
-    arduino_com.write("{0} {1}\n".format(OpCodes.GetPin, pin).encode('ascii'))
+    arduino_com.write("{0} {1}\n".format(OpCodes.GetPin, pin).encode('utf-8'))
 
     # Wait for the echo string, which will contain the pin value.
     return int(wait_for_response(arduino_com))
@@ -95,9 +98,9 @@ def wait_for_response(arduino_com):
     while arduino_com.inWaiting() == 0:
         pass
 
-    echo = arduino_com.readline().strip().decode("ascii")
+    echo = arduino_com.readline().strip().decode("utf-8")
 
-    if DEBUG_LEVEL > 0:
-        print('Echo String: ' + echo)
+    if DEBUG_LEVEL > 0: # ??? DEBUG_LEVEL is never changed 0 > 0 is false
+        print(('Echo String: ' + echo))
 
     return echo
