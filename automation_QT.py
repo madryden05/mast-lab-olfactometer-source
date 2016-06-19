@@ -144,7 +144,7 @@ def eval_Value(section, key):
 
 # This is the port and baud rate for talking to the Arduino.
 # On Windows setups, the serial port will look something like 'COM3'.
-SERIAL_PORT = '/dev/tty.usbmodem1421'
+SERIAL_PORT = '/dev/tty.usbmodem1421' #using macOS
 BAUD_RATE = 9600
 
 # Create a list of all of our solenoids.  Each solenoid is given a name, which should indicate the odor it releases,
